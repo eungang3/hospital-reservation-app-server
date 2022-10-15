@@ -6,6 +6,7 @@ CREATE TABLE reservations(
     patient_id INT NOT NULL,
     hospital_id INT NOT NULL,
     time_window_id INT NOT NULL,
+    status INT NOT NULL default 1,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE reservation (hospital_id, time_window_id),

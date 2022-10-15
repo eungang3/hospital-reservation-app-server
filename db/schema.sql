@@ -17,14 +17,14 @@
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hospital_time_windows` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `hospital_id` int DEFAULT NULL,
-  `time_window_id` int DEFAULT NULL,
+  `hospital_id` int NOT NULL,
+  `time_window_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `hospital_id` (`hospital_id`),
   KEY `time_window_id` (`time_window_id`),
   CONSTRAINT `hospital_time_windows_ibfk_1` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`id`),
   CONSTRAINT `hospital_time_windows_ibfk_2` FOREIGN KEY (`time_window_id`) REFERENCES `time_windows` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,11 +35,11 @@ CREATE TABLE `hospital_time_windows` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hospitals` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(200) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,13 +50,15 @@ CREATE TABLE `hospitals` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `patients` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `phone_number` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `phone_number` varchar(300) NOT NULL,
+  `email` varchar(300) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `phone_number` (`phone_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `phone_number` (`phone_number`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,21 +69,22 @@ CREATE TABLE `patients` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservations` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `reservation_number` int DEFAULT NULL,
-  `patient_id` int DEFAULT NULL,
-  `hospital_id` int DEFAULT NULL,
-  `time_window_id` int DEFAULT NULL,
+  `type` int DEFAULT NULL,
+  `reservation_number` varchar(300) NOT NULL,
+  `patient_id` int NOT NULL,
+  `hospital_id` int NOT NULL,
+  `time_window_id` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `reservation_number` (`reservation_number`),
   KEY `patient_id` (`patient_id`),
   KEY `hospital_id` (`hospital_id`),
   KEY `time_window_id` (`time_window_id`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`id`),
   CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`time_window_id`) REFERENCES `time_windows` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,11 +111,11 @@ CREATE TABLE `time_windows` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'reservation_hospital'
+-- Dumping routines for database 'hospital'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

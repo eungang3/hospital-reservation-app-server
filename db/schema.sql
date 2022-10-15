@@ -78,8 +78,8 @@ CREATE TABLE `reservations` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reservation_number` (`reservation_number`),
+  UNIQUE KEY `reservation` (`hospital_id`,`time_window_id`),
   KEY `patient_id` (`patient_id`),
-  KEY `hospital_id` (`hospital_id`),
   KEY `time_window_id` (`time_window_id`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`hospital_id`) REFERENCES `hospitals` (`id`),
@@ -108,8 +108,6 @@ CREATE TABLE `schema_migrations` (
 CREATE TABLE `time_windows` (
   `id` int NOT NULL AUTO_INCREMENT,
   `start_time` timestamp NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

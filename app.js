@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 require('express-async-errors');
-const router = require('./routes');
+const router = require('./routes/index');
 const morgan = require('morgan');
 const cors = require('cors');
 const myDataSource = require('./models/db.config');

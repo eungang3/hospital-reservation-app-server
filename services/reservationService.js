@@ -36,4 +36,32 @@ const createReservation = async (body) => {
   );
 };
 
-module.exports = { createReservation };
+const updateReservationStatus = async (reservation_id, status) => {
+  //존재하는 예약번호인지 확인
+  const seletedReservation = await reservationDao.readReservationById(reservation_id);
+
+  if (seletedReservation.length == 0) {
+    const error = new Error('reservation_id does not exist.');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  //status = 4(노쇼) 인 경우 -> 예약 status, 환자 is_blocked 둘 다 업데이트
+  if (status == 4) {
+    //이미 차단된 환자인지 확인
+    const seletedPatient = await reservationDao.readPatientById(seletedReservation[0].patient_id);
+
+    if (seletedPatient[0].is_blocked == 1) {
+      const error = new Error('already blocked patient.');
+      error.statusCode = 409;
+      throw error;
+    }
+    //환자 is bloked 변경
+    await reservationDao.updatePatientIsBlocked(seletedReservation[0].patient_id);
+  }
+
+  //예약 상태 변경
+  await reservationDao.updateReservationStatus(status, reservation_id);
+};
+
+module.exports = { createReservation, updateReservationStatus };

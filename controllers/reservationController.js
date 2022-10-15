@@ -5,4 +5,9 @@ const createReservation = async (req, res) => {
   res.status(201).json({ message: 'reservation success' });
 };
 
-module.exports = { createReservation };
+const updateReservationStatus = async (req, res) => {
+  await reservationService.updateReservationStatus(req.params.id, req.body.status);
+  res.status(201).json({ message: 'reservation update success' });
+};
+
+module.exports = { createReservation, updateReservationStatus };

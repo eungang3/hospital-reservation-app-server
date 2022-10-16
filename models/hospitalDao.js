@@ -1,15 +1,39 @@
 const myDataSource = require('./db.config');
 
-const getAvailableHospitals = async () => {
+const getAvailableHospitalCount = async () => {
   try {
     const hospitals = await myDataSource.query(
       `
-      SELECT 
+        SELECT 
+        DISTINCT COUNT(*) OVER () AS total
+        FROM hospital_time_windows
+        JOIN time_windows ON time_windows.id = hospital_time_windows.time_window_id
+        JOIN hospitals ON hospital_time_windows.hospital_id = hospitals.id
+        WHERE (hospital_id, time_window_id) NOT IN(
+            SELECT reservations.hospital_id, reservations.time_window_id
+            FROM hospital_time_windows 
+            JOIN reservations 
+            ON reservations.hospital_id = hospital_time_windows.hospital_id 
+            AND reservations.time_window_id = hospital_time_windows.time_window_id)
+           GROUP BY hospital_time_windows.hospital_id
+        `
+    );
+    return hospitals;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+const getAvailableHospitals = async (limit, offset) => {
+  try {
+    const hospitals = await myDataSource.query(
+      `
+      SELECT
         hospital_time_windows.hospital_id, 
         JSON_ARRAYAGG(
-            JSON_OBJECT(
-                "start_time", time_windows.start_time 
-            )
+            time_windows.start_time 
         ) as available_times,
         hospitals.name
       FROM hospital_time_windows
@@ -21,8 +45,10 @@ const getAvailableHospitals = async () => {
         JOIN reservations 
         ON reservations.hospital_id = hospital_time_windows.hospital_id 
         AND reservations.time_window_id = hospital_time_windows.time_window_id)
-       GROUP BY hospital_time_windows.hospital_id;
-    `
+       GROUP BY hospital_time_windows.hospital_id
+       LIMIT ? OFFSET ?;
+    `,
+      [parseInt(limit), parseInt(offset)]
     );
     return hospitals;
   } catch (err) {
@@ -54,4 +80,4 @@ const getAvailableTime = async (hospitalId) => {
   }
 };
 
-module.exports = { getAvailableHospitals, getAvailableTime };
+module.exports = { getAvailableHospitals, getAvailableTime, getAvailableHospitalCount };

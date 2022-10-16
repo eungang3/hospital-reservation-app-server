@@ -91,6 +91,6 @@ $ node server.js
 ### Postman
 
 - 김민지 : ()  👉 [Postman API doc]
-- 박정용 : (전체 예약조회)  👉 [Postman API doc]
+- 박정용 : (전체 예약조회)  👉 [Postman API doc](https://documenter.getpostman.com/view/22204904/2s847BUbRi)
 - 육지 : ()  👉 [Postman API doc]
 - 조예슬 : () 👉 [Postman API doc]

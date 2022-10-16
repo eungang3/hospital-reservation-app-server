@@ -17,9 +17,17 @@ const createReservation = async (body) => {
 
   //patients 테이블에 등록되어 있는 환자인지 확인
   const seletedPatient = await reservationDao.readPatientIdByPhoneNumber(phone_number);
+  console.log('seletedPatient!!!', seletedPatient);
 
   if (seletedPatient.length > 0) {
     //등록된 환자인 경우
+    //이전에 노쇼하여 차단된 환자인 경우
+    if (seletedPatient[0].is_blocked == 1) {
+      const error = new Error('blocked user');
+      error.statusCode = 401;
+      throw error;
+    }
+
     patient_id = seletedPatient[0].id;
   } else {
     //등록되지 않은 환자인 경우

@@ -28,7 +28,7 @@ const readPatientIdByPhoneNumber = async (phone_number) => {
   try {
     const seletedPatient = await myDataSource.query(
       `
-      SELECT id
+      SELECT id, is_blocked
       FROM patients
       WHERE phone_number = ?
     `,

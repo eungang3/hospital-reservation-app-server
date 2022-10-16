@@ -107,6 +107,87 @@ const getFullListByPatientName =
     return list
     
   }
+/**
+ * 기능: patients 테이블 is_blocked 컬럼 업데이트
+ */
+ const updatePatientIsBlocked = async (patient_id) => {
+  try {
+    await myDataSource.query(
+      `
+      UPDATE patients 
+      SET is_blocked = 1
+      WHERE id = ?
+      `,
+      [patient_id]
+    );
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+/**
+ * 기능: reservations 테이블 status 컬럼 업데이트
+ */
+const updateReservationStatus = async (status, reservation_id) => {
+  try {
+    await myDataSource.query(
+      `
+      UPDATE reservations
+      SET status = ?
+      WHERE id = ?
+      `,
+      [status, reservation_id]
+    );
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+/**
+ * 기능: reservation id로 예약 정보 조회
+ */
+const readReservationById = async (id) => {
+  try {
+    const seletedReservation = await myDataSource.query(
+      `
+      SELECT *
+      FROM reservations
+      WHERE id = ?
+    `,
+      [id]
+    );
+    return seletedReservation;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+/**
+ * 기능: patient id로 환자 정보 조회
+ */
+const readPatientById = async (patient_id) => {
+  try {
+    const seletedPatient = await myDataSource.query(
+      `
+      SELECT *
+      FROM patients
+      WHERE id = ?
+    `,
+      [patient_id]
+    );
+    return seletedPatient;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
 
 module.exports = { 
   readReservation, 
@@ -114,6 +195,14 @@ module.exports = {
   createPatient,
   createReservation,
   getFullListByReservationNumber,
-  getFullListByPatientName
+  getFullListByPatientName,
+  updatePatientIsBlocked,
+  updateReservationStatus,
+  readPatientById,
+  readReservationById,
+
 
  };
+
+
+

@@ -18,9 +18,14 @@ const allReservationCheckByReservationNumber = async(req, res) => {
 
   return res.status(200).json({result : result, message : "success_get_reservation"})
 }
+const updateReservationStatus = async (req, res) => {
+  await reservationService.updateReservationStatus(req.params.id, req.body.status);
+  res.status(201).json({ message: 'reservation update success' });
+};
 
 module.exports = { 
   createReservation,
   allReservationCheckByName,
-  allReservationCheckByReservationNumber
+  allReservationCheckByReservationNumber,
+  updateReservationStatus
 };

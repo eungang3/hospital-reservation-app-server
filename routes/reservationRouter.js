@@ -7,6 +7,6 @@ router.get('/patient', reservationController.allReservationCheckByName);
 router.get('', reservationController.allReservationCheckByReservationNumber);
 router.post('/', reservationValidator(), reservationController.createReservation);
 router.patch('/:id/status', reservationController.updateReservationStatus);
-router.patch('/update/info', reservationController.updateReservationController);
+router.patch('/info', reservationController.updateReservationController);
 
 module.exports = router;

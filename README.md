@@ -76,12 +76,12 @@ $ node server.js
 
 ---
 
-### 4. (조예슬)
+### 4. 병원 예약 가능 목록(조예슬)
 
----
+--- 예약 가능한 모든 병원 목록을 확인할 수 있습니다. limit, offset을 쿼리 파라미터로 넣을 수 있습니다.(디폴트 limit 20, offset 0)
 
 
----
+--- 패스 파라미터로 병원 아이디를 넣으면 해당 병원의 예약 가능 일시를 확인할 수 있습니다.
 
 
 
@@ -92,4 +92,4 @@ $ node server.js
 - 김민지 : ()  👉 [Postman API doc]
 - 박정용 : (전체 예약조회)  👉 [Postman API doc](https://documenter.getpostman.com/view/22204904/2s847BUbRi)
 - 육지 : ()  👉 [Postman API doc]
-- 조예슬 : () 👉 [Postman API doc]
+- 조예슬 : (병원 예약 가능 목록) 👉 [Postman API doc] (https://documenter.getpostman.com/view/22215172/2s847BUbt7)

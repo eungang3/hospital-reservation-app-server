@@ -2,7 +2,6 @@ const reservationDao = require('../models/reservationDao');
 const { v4 } = require('uuid');
 const ErrorCreator = require('../middlewares/error_creator');
 
-
 const createReservation = async (body) => {
   const { type, user_name, phone_number, email, hospital_id, time_window_id } = body;
   let patient_id;
@@ -38,25 +37,24 @@ const createReservation = async (body) => {
   );
 };
 
-
-const allReservationCheckByName = async (patient_name) => { 
+const allReservationCheckByName = async (patient_name) => {
   const checkByName = await reservationDao.getFullListByPatientName(patient_name);
-  
-  if(!checkByName) {
-    throw new ErrorCreator (
-      "doesn't_exist_patient", 404);
+
+  if (!checkByName) {
+    throw new ErrorCreator("doesn't_exist_patient", 404);
   }
   return checkByName;
 };
 const allReservationCheckByReservationNumber = async (reservation_number) => {
-  const checkByReservationNumber = await reservationDao.getFullListByReservationNumber(reservation_number);
+  const checkByReservationNumber = await reservationDao.getFullListByReservationNumber(
+    reservation_number
+  );
 
-  if(!reservation_number) {
-    throw new ErrorCreator (
-      "doesn't_exist_reservation_number", 404);    
+  if (!reservation_number) {
+    throw new ErrorCreator("doesn't_exist_reservation_number", 404);
   }
-  return checkByReservationNumber
-}
+  return checkByReservationNumber;
+};
 
 const updateReservationStatus = async (reservation_id, status) => {
   //존재하는 예약번호인지 확인
@@ -86,36 +84,37 @@ const updateReservationStatus = async (reservation_id, status) => {
   await reservationDao.updateReservationStatus(status, reservation_id);
 };
 
-const updateReservationService = async(reservationDto) => {
+const updateReservationService = async (reservationDto) => {
   const originInfo = await reservationDao.findReservationInfo(reservationDto.reservation_number);
   reservationDto['originInfo'] = originInfo;
 
-  if(originInfo){
-      if(reservationDto.name){
-          await reservationDao.updateName(reservationDto);
-      }
-      if(reservationDto.time_window_id){
-          await reservationDao.updateTime(reservationDto);
-      }
-      if(reservationDto.type){
-          await reservationDao.updateType(reservationDto);
-      }
-  }else{
-      const error = new Error("check reservation_number");
-      error.statusCode = 400;
-      throw error;
+  if (originInfo) {
+    if (reservationDto.name) {
+      await reservationDao.updateName(reservationDto);
+    }
+    if (reservationDto.time_window_id) {
+      await reservationDao.updateTime(reservationDto);
+    }
+    if (reservationDto.type) {
+      await reservationDao.updateType(reservationDto);
+    }
+  } else {
+    const error = new Error('check reservation_number');
+    error.statusCode = 400;
+    throw error;
   }
 
-  const reservationInfo = await reservationDao.findReservationInfo(reservationDto.reservation_number);
+  const reservationInfo = await reservationDao.findReservationInfo(
+    reservationDto.reservation_number
+  );
 
   return reservationInfo;
 };
 
-
-module.exports = { 
+module.exports = {
   createReservation,
   allReservationCheckByName,
   allReservationCheckByReservationNumber,
   updateReservationStatus,
-  updateReservationService
+  updateReservationService,
 };

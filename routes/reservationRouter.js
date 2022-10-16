@@ -1,6 +1,6 @@
 const express = require('express');
 const reservationController = require('../controllers/reservationController');
-const errorHandler = require("../middlewares/errorHandler")
+const errorHandler = require('../middlewares/errorHandler');
 
 const router = express.Router();
 const { reservationValidator } = require('../validator/reservationValidator');

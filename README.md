@@ -99,7 +99,9 @@ $ node server.js
 
 ### 3. 전체 예약목록 (박정용)
 
-- 내용 추가 예정
+- 쿼리스트링으로 예약자 이름 또는 예약번호를 가져옵니다.
+- 입력받은 쿼리스트링 두가지를 DB에서 있는지 확인하고 없으면 에러를 반환합니다.
+- DB에 있는 결과값을 반환합니다.
 
 ---
 
@@ -112,6 +114,6 @@ $ node server.js
 ## 🏥 API docs
 
 - 조예슬 : (병원 예약 가능 목록) 👉 [Postman API doc](https://documenter.getpostman.com/view/22215172/2s847BUbt7)
-- 육지 : (예약 등록) 👉 [Postman API doc] [Postman API doc](https://documenter.getpostman.com/view/21288917/2s847BUvgL)
+- 육지 : (예약 등록) 👉 [Postman API doc](https://documenter.getpostman.com/view/21288917/2s847BUvgL)
 - 박정용 : (전체 예약조회) 👉 [Postman API doc](https://documenter.getpostman.com/view/22204904/2s847BUbRi)
 - 김민지 : (예약내역 정보 수정) 👉 [Postman API doc] [Postman API doc]()

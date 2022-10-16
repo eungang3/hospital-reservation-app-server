@@ -41,7 +41,6 @@ TYPEORM_USERNAME = 계정
 TYPEORM_PASSWORD = 비밀번호
 TYPEORM_DATABASE = 데이터베이스명
 TYPEORM_LOGGING = TRUE
-jwt_secret_key = 토큰용 시크릿키
 
 # 데이터베이스 테이블 생성
 $ npx dbmate up

@@ -7,6 +7,22 @@ const createReservation = async (body) => {
   let patient_id;
   let reservation_number = v4();
 
+  //DB에 존재하는 hospital_id 인지 확인
+  const seletedHospital = await reservationDao.readHospitalById(hospital_id);
+  if (seletedHospital.length == 0) {
+    const error = new Error('hospital_id does not exist.');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  //DB에 존재하는 time_window_id 인지 확인
+  const seletedTimeWindow = await reservationDao.readTimeWindowById(time_window_id);
+  if (seletedTimeWindow.length == 0) {
+    const error = new Error('time_window_id does not exist.');
+    error.statusCode = 404;
+    throw error;
+  }
+
   //이미 예약된 시간인지 확인
   const seletedReservation = await reservationDao.readReservation(hospital_id, time_window_id);
   if (seletedReservation.length > 0) {

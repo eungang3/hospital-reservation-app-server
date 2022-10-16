@@ -188,6 +188,48 @@ const readPatientById = async (patient_id) => {
   }
 };
 
+/**
+ * 기능: hospital id로 hospital 조회
+ */
+const readHospitalById = async (hospital_id) => {
+  try {
+    const seletedHospital = await myDataSource.query(
+      `
+      SELECT *
+      FROM hospitals
+      WHERE id = ?
+    `,
+      [hospital_id]
+    );
+    return seletedHospital;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+/**
+ * 기능: time_windows id로 time_windows 조회
+ */
+const readTimeWindowById = async (time_window_id) => {
+  try {
+    const seletedTimeWindow = await myDataSource.query(
+      `
+      SELECT *
+      FROM time_windows
+      WHERE id = ?
+    `,
+      [time_window_id]
+    );
+    return seletedTimeWindow;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
 const findReservationInfo = async (reservation_number) => {
   const [result] = await myDataSource.query(
     `
@@ -246,4 +288,6 @@ module.exports = {
   updateName,
   updateTime,
   updateType,
+  readHospitalById,
+  readTimeWindowById,
 };

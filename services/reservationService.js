@@ -6,7 +6,7 @@ const createReservation = async (body) => {
   let patient_id;
   let reservation_number = v4();
 
-  // 이미 예약된 시간인지 확인
+  //이미 예약된 시간인지 확인
   const seletedReservation = await reservationDao.readReservation(hospital_id, time_window_id);
   if (seletedReservation.length > 0) {
     const error = new Error('already reserved time');
@@ -14,7 +14,7 @@ const createReservation = async (body) => {
     throw error;
   }
 
-  //patients 테이블에 등록되어있는 환자인지 확인
+  //patients 테이블에 등록되어 있는 환자인지 확인
   const seletedPatient = await reservationDao.readPatientIdByPhoneNumber(phone_number);
 
   if (seletedPatient.length > 0) {

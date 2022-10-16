@@ -1,5 +1,7 @@
 const reservationDao = require('../models/reservationDao');
 const { v4 } = require('uuid');
+const ErrorCreator = require('../middlewares/error_creator');
+
 
 const createReservation = async (body) => {
   const { type, user_name, phone_number, email, hospital_id, time_window_id } = body;
@@ -35,6 +37,26 @@ const createReservation = async (body) => {
     time_window_id
   );
 };
+
+
+const allReservationCheckByName = async (patient_name) => { 
+  const checkByName = await reservationDao.getFullListByPatientName(patient_name);
+  
+  if(!checkByName) {
+    throw new ErrorCreator (
+      "doesn't_exist_patient", 404);
+  }
+  return checkByName;
+};
+const allReservationCheckByReservationNumber = async (reservation_number) => {
+  const checkByReservationNumber = await reservationDao.getFullListByReservationNumber(reservation_number);
+
+  if(!reservation_number) {
+    throw new ErrorCreator (
+      "doesn't_exist_reservation_number", 404);    
+  }
+  return checkByReservationNumber
+}
 
 const updateReservationStatus = async (reservation_id, status) => {
   //존재하는 예약번호인지 확인
@@ -89,4 +111,11 @@ const updateReservationService = async(reservationDto) => {
   return reservationInfo;
 };
 
-module.exports = { createReservation, updateReservationStatus, updateReservationService };
+
+module.exports = { 
+  createReservation,
+  allReservationCheckByName,
+  allReservationCheckByReservationNumber,
+  updateReservationStatus,
+  updateReservationService
+};

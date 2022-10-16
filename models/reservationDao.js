@@ -88,10 +88,29 @@ const createReservation = async (
   }
 };
 
+const getFullListByReservationNumber = 
+  async (reservation_number) => {
+    const [list] = await myDataSource.query(
+      ` SELECT * FROM reservations WHERE reservation_number = ?`,[reservation_number] 
+      )
+      
+    return list
+}
+
+const getFullListByPatientName =
+  async (patient_name) => {
+    const [list] = await myDataSource.query(
+      ` SELECT * FROM reservations JOIN patients 
+        ON reservations.patient_id = patients.id WHERE name = ?`,[patient_name]
+      );
+     
+    return list
+    
+  }
 /**
  * 기능: patients 테이블 is_blocked 컬럼 업데이트
  */
-const updatePatientIsBlocked = async (patient_id) => {
+ const updatePatientIsBlocked = async (patient_id) => {
   try {
     await myDataSource.query(
       `
@@ -213,16 +232,17 @@ const updateType = async(reservationDao) => {
   );
 };
 
-
 module.exports = {
   readReservation,
   readPatientIdByPhoneNumber,
   createPatient,
   createReservation,
+  getFullListByReservationNumber,
+  getFullListByPatientName,
   updatePatientIsBlocked,
-  readReservationById,
-  readPatientById,
   updateReservationStatus,
+  readPatientById,
+  readReservationById,
   findReservationInfo,
   updateName,
   updateTime,

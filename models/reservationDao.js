@@ -88,4 +88,32 @@ const createReservation = async (
   }
 };
 
-module.exports = { readReservation, readPatientIdByPhoneNumber, createPatient, createReservation };
+const getFullListByReservationNumber = 
+  async (reservation_number) => {
+    const [list] = await myDataSource.query(
+      ` SELECT * FROM reservations WHERE reservation_number = ?`,[reservation_number] 
+      )
+      
+    return list
+}
+
+const getFullListByPatientName =
+  async (patient_name) => {
+    const [list] = await myDataSource.query(
+      ` SELECT * FROM reservations JOIN patients 
+        ON reservations.patient_id = patients.id WHERE name = ?`,[patient_name]
+      );
+     
+    return list
+    
+  }
+
+module.exports = { 
+  readReservation, 
+  readPatientIdByPhoneNumber,
+  createPatient,
+  createReservation,
+  getFullListByReservationNumber,
+  getFullListByPatientName
+
+ };

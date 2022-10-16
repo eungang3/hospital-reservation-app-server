@@ -7,6 +7,22 @@ const createReservation = async (body) => {
   let patient_id;
   let reservation_number = v4();
 
+  //DB에 존재하는 hospital_id 인지 확인
+  const seletedHospital = await reservationDao.readHospitalById(hospital_id);
+  if (seletedHospital.length == 0) {
+    const error = new Error('hospital_id does not exist.');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  //DB에 존재하는 time_window_id 인지 확인
+  const seletedTimeWindow = await reservationDao.readTimeWindowById(time_window_id);
+  if (seletedTimeWindow.length == 0) {
+    const error = new Error('time_window_id does not exist.');
+    error.statusCode = 404;
+    throw error;
+  }
+
   //이미 예약된 시간인지 확인
   const seletedReservation = await reservationDao.readReservation(hospital_id, time_window_id);
   if (seletedReservation.length > 0) {
@@ -17,9 +33,17 @@ const createReservation = async (body) => {
 
   //patients 테이블에 등록되어 있는 환자인지 확인
   const seletedPatient = await reservationDao.readPatientIdByPhoneNumber(phone_number);
+  console.log('seletedPatient!!!', seletedPatient);
 
   if (seletedPatient.length > 0) {
     //등록된 환자인 경우
+    //이전에 노쇼하여 차단된 환자인 경우
+    if (seletedPatient[0].is_blocked == 1) {
+      const error = new Error('blocked user');
+      error.statusCode = 401;
+      throw error;
+    }
+
     patient_id = seletedPatient[0].id;
   } else {
     //등록되지 않은 환자인 경우

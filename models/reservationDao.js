@@ -28,7 +28,7 @@ const readPatientIdByPhoneNumber = async (phone_number) => {
   try {
     const seletedPatient = await myDataSource.query(
       `
-      SELECT id
+      SELECT id, is_blocked
       FROM patients
       WHERE phone_number = ?
     `,
@@ -88,6 +88,24 @@ const createReservation = async (
   }
 };
 
+const getFullListByReservationNumber = async (reservation_number) => {
+  const [list] = await myDataSource.query(
+    ` SELECT * FROM reservations WHERE reservation_number = ?`,
+    [reservation_number]
+  );
+
+  return list;
+};
+
+const getFullListByPatientName = async (patient_name) => {
+  const [list] = await myDataSource.query(
+    ` SELECT * FROM reservations JOIN patients 
+        ON reservations.patient_id = patients.id WHERE name = ?`,
+    [patient_name]
+  );
+
+  return list;
+};
 /**
  * 기능: patients 테이블 is_blocked 컬럼 업데이트
  */
@@ -170,9 +188,51 @@ const readPatientById = async (patient_id) => {
   }
 };
 
-const findReservationInfo = async(reservation_number) => {
-  const [result] = await myDataSource.query(
+/**
+ * 기능: hospital id로 hospital 조회
+ */
+const readHospitalById = async (hospital_id) => {
+  try {
+    const seletedHospital = await myDataSource.query(
       `
+      SELECT *
+      FROM hospitals
+      WHERE id = ?
+    `,
+      [hospital_id]
+    );
+    return seletedHospital;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+/**
+ * 기능: time_windows id로 time_windows 조회
+ */
+const readTimeWindowById = async (time_window_id) => {
+  try {
+    const seletedTimeWindow = await myDataSource.query(
+      `
+      SELECT *
+      FROM time_windows
+      WHERE id = ?
+    `,
+      [time_window_id]
+    );
+    return seletedTimeWindow;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+const findReservationInfo = async (reservation_number) => {
+  const [result] = await myDataSource.query(
+    `
       SELECT p.name, r.type, t.start_time, t.id as time_window_id, p.id as patient_id, r.id as reservation_id
       FROM reservations as r
       INNER JOIN patients as p ON r.patient_id = p.id
@@ -183,9 +243,9 @@ const findReservationInfo = async(reservation_number) => {
   return result;
 };
 
-const updateName = async(reservationDao) => {
+const updateName = async (reservationDao) => {
   await myDataSource.query(
-      `
+    `
       UPDATE patients
       SET name = "${reservationDao.name}"
       WHERE id = "${reservationDao.originInfo.patient_id}"
@@ -193,9 +253,9 @@ const updateName = async(reservationDao) => {
   );
 };
 
-const updateTime = async(reservationDao) => {
+const updateTime = async (reservationDao) => {
   await myDataSource.query(
-      `
+    `
       UPDATE reservations
       SET time_window_id = ${reservationDao.time_window_id}
       WHERE id = "${reservationDao.originInfo.reservation_id}"
@@ -203,9 +263,9 @@ const updateTime = async(reservationDao) => {
   );
 };
 
-const updateType = async(reservationDao) => {
+const updateType = async (reservationDao) => {
   await myDataSource.query(
-      `
+    `
       UPDATE reservations
       SET type = "${reservationDao.type}"
       WHERE id = "${reservationDao.originInfo.reservation_id}"
@@ -213,18 +273,21 @@ const updateType = async(reservationDao) => {
   );
 };
 
-
 module.exports = {
   readReservation,
   readPatientIdByPhoneNumber,
   createPatient,
   createReservation,
+  getFullListByReservationNumber,
+  getFullListByPatientName,
   updatePatientIsBlocked,
-  readReservationById,
-  readPatientById,
   updateReservationStatus,
+  readPatientById,
+  readReservationById,
   findReservationInfo,
   updateName,
   updateTime,
   updateType,
+  readHospitalById,
+  readTimeWindowById,
 };

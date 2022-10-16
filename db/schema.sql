@@ -115,7 +115,7 @@ CREATE TABLE `time_windows` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'reservation_hospital'
+-- Dumping routines for database 'onboarding4'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -9,7 +9,15 @@ const getAvailableHospitals = async (limit, offset) => {
 };
 
 const getAvailableTime = async (hospitalId) => {
-  return await hospitalDao.getAvailableTime(hospitalId);
+  const availableTimes = await hospitalDao.getAvailableTime(hospitalId);
+  const hospitalName = await hospitalDao.getHospitalName(hospitalId);
+  console.log(hospitalName);
+  const result = {
+    id: hospitalId,
+    name: hospitalName[0]['name'],
+    availableTimes: availableTimes[0]['available_times'],
+  };
+  return result;
 };
 
 module.exports = { getAvailableHospitals, getAvailableTime };

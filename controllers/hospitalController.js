@@ -15,7 +15,7 @@ const getAvailableHospitals = async (req, res) => {
 
 // 특정 병원의 예약 가능 일시 확인
 const getAvailableTime = async (req, res) => {
-  const hospitalId = req.params.hospitalId;
+  const hospitalId = parseInt(req.params.hospitalId);
   const availableTimes = await hospitalService.getAvailableTime(hospitalId);
   res.status(200).json({ message: availableTimes });
 };

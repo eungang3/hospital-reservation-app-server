@@ -80,4 +80,22 @@ const getAvailableTime = async (hospitalId) => {
   }
 };
 
-module.exports = { getAvailableHospitals, getAvailableTime, getAvailableHospitalCount };
+const getHospitalName = async (hospitalId) => {
+  try {
+    const hospitalName = await myDataSource.query(`SELECT name FROM hospitals WHERE id = ?`, [
+      hospitalId,
+    ]);
+    return hospitalName;
+  } catch (err) {
+    const error = new Error(err.message);
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+module.exports = {
+  getAvailableHospitals,
+  getAvailableTime,
+  getAvailableHospitalCount,
+  getHospitalName,
+};

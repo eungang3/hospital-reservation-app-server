@@ -86,13 +86,36 @@ const updateReservationStatus = async (reservation_id, status) => {
   await reservationDao.updateReservationStatus(status, reservation_id);
 };
 
+const updateReservationService = async(reservationDto) => {
+  const originInfo = await reservationDao.findReservationInfo(reservationDto.reservation_number);
+  reservationDto['originInfo'] = originInfo;
+
+  if(originInfo){
+      if(reservationDto.name){
+          await reservationDao.updateName(reservationDto);
+      }
+      if(reservationDto.time_window_id){
+          await reservationDao.updateTime(reservationDto);
+      }
+      if(reservationDto.type){
+          await reservationDao.updateType(reservationDto);
+      }
+  }else{
+      const error = new Error("check reservation_number");
+      error.statusCode = 400;
+      throw error;
+  }
+
+  const reservationInfo = await reservationDao.findReservationInfo(reservationDto.reservation_number);
+
+  return reservationInfo;
+};
+
 
 module.exports = { 
   createReservation,
   allReservationCheckByName,
   allReservationCheckByReservationNumber,
-  updateReservationStatus
+  updateReservationStatus,
+  updateReservationService
 };
-
-
-

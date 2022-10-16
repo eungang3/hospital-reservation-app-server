@@ -189,8 +189,51 @@ const readPatientById = async (patient_id) => {
   }
 };
 
-module.exports = { 
-  readReservation, 
+const findReservationInfo = async(reservation_number) => {
+  const [result] = await myDataSource.query(
+      `
+      SELECT p.name, r.type, t.start_time, t.id as time_window_id, p.id as patient_id, r.id as reservation_id
+      FROM reservations as r
+      INNER JOIN patients as p ON r.patient_id = p.id
+      INNER JOIN time_windows as t ON r.time_window_id = t.id
+      WHERE reservation_number = ${reservation_number}
+      `
+  );
+  return result;
+};
+
+const updateName = async(reservationDao) => {
+  await myDataSource.query(
+      `
+      UPDATE patients
+      SET name = "${reservationDao.name}"
+      WHERE id = "${reservationDao.originInfo.patient_id}"
+      `
+  );
+};
+
+const updateTime = async(reservationDao) => {
+  await myDataSource.query(
+      `
+      UPDATE reservations
+      SET time_window_id = ${reservationDao.time_window_id}
+      WHERE id = "${reservationDao.originInfo.reservation_id}"
+      `
+  );
+};
+
+const updateType = async(reservationDao) => {
+  await myDataSource.query(
+      `
+      UPDATE reservations
+      SET type = "${reservationDao.type}"
+      WHERE id = "${reservationDao.originInfo.reservation_id}"
+      `
+  );
+};
+
+module.exports = {
+  readReservation,
   readPatientIdByPhoneNumber,
   createPatient,
   createReservation,
@@ -200,9 +243,8 @@ module.exports = {
   updateReservationStatus,
   readPatientById,
   readReservationById,
-
-
- };
-
-
-
+  findReservationInfo,
+  updateName,
+  updateTime,
+  updateType,
+};

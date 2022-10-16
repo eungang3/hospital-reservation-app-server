@@ -74,7 +74,7 @@ const allReservationCheckByReservationNumber = async (reservation_number) => {
     reservation_number
   );
 
-  if (!reservation_number) {
+  if (!checkByReservationNumber) {
     throw new ErrorCreator("doesn't_exist_reservation_number", 404);
   }
   return checkByReservationNumber;

@@ -116,4 +116,4 @@ $ node server.js
 - 조예슬 : (병원 예약 가능 목록) 👉 [Postman API doc](https://documenter.getpostman.com/view/22215172/2s847BUbt7)
 - 육지 : (예약 등록) 👉 [Postman API doc](https://documenter.getpostman.com/view/21288917/2s847BUvgL)
 - 박정용 : (전체 예약조회) 👉 [Postman API doc](https://documenter.getpostman.com/view/22204904/2s847BUbRi)
-- 김민지 : (예약내역 정보 수정) 👉 [Postman API doc](https://www.notion.so/API-f3beeca53e5a4a79b7cfb8af8e63e3d7)
+- 김민지 : (예약내역 정보 수정) 👉 [Postman API doc](https://documenter.getpostman.com/view/22580140/2s847CvEiW)

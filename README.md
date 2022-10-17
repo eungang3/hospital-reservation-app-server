@@ -10,7 +10,7 @@
 병원을 예약하는 어플리케이션입니다.
 
 - 환자가 예약을 하려 할때 예약 가능일자, 병원, 진료목적을 선택하여 예약을 합니다.
-- 이전 예약에서 노쇼 한 환자에 대해 예약이 불가하도록 하는 기능을 추가하여 노쇼를 방지하는 애플리케이션을 구현.
+- 이전 예약에서 노쇼 한 환자에 대해 예약이 불가하도록 하는 기능을 추가하여 노쇼를 방지하는 플리케이션을 구현.
 
 - 개발기간: 2022.10.14 - 2022.10.17
 - 개발인원: [김민지](https://github.com/enddl3224), [박정용](https://github.com/WorkYong), [육지(PM)](https://github.com/azure928), [조예슬](https://github.com/eungang3)
@@ -76,7 +76,7 @@ $ node server.js
 
 **✅ 예약 등록**
 
-/reservations
+**POST**  /reservations
 
 - body 값으로 예약 정보를 입력받아 예약을 등록합니다.
 - 입력받은 정보에 대한 유효성 검사를 express validator 이용하여 구현했습니다.
@@ -89,7 +89,7 @@ $ node server.js
 
 **✅ 예약 상태 변경 (노쇼 환자 차단)**
 
-/reservations/:id/status
+**PATCH**  /reservations/:id/status
 
 - 파라미터로 reservation id를, body 값으로 status 를 입력받아 예약 상태를 변경합니다.
 - 예약 상태 종류 : 1.예약완료(default) / 2.예약취소 / 3.진료완료 / 4.노쇼
